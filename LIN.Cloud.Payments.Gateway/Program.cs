@@ -12,7 +12,7 @@ builder.Services.AddReverseProxy()
             Match = new RouteMatch() { Path = "/MercadoPago/{**catch-all}" },
             Transforms = new List<Dictionary<string, string>>
             {
-                new() { { "PathRemovePrefix", "/MercadoPago" } }
+                new() { { "RequestHeader", "x-gateway" }, { "Set", "MercadoPago" } }
             }
         }
     ],
