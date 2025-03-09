@@ -1,10 +1,6 @@
-using LIN.Cloud.Payments.Gateway.Services;
 using Yarp.ReverseProxy.Configuration;
-using Yarp.ReverseProxy.Health;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSingleton<IActiveHealthCheckPolicy, HealthPolicy>();
-
 builder.Services.AddReverseProxy()
     .LoadFromMemory(
     [
@@ -23,6 +19,7 @@ builder.Services.AddReverseProxy()
         new ClusterConfig()
         {
             ClusterId = "mercado_cluster",
+            LoadBalancingPolicy="RoundRobin",
             Destinations = new Dictionary<string, DestinationConfig>
             {
                 { "mercado1", new DestinationConfig() { Address = "https://www.cloud.mercadopago.linplatform.com", } },
@@ -31,9 +28,9 @@ builder.Services.AddReverseProxy()
             HealthCheck = new () {
                 Active = new(){
                     Enabled = true,
-                    Interval = TimeSpan.FromSeconds(5),
+                    Interval = TimeSpan.FromSeconds(2),
                     Timeout = TimeSpan.FromSeconds(2),
-                    Policy = "HealthPolicy",
+                    Policy = "ConsecutiveFailures",
                     Path ="/health"
                 },
                 Passive = new() {
