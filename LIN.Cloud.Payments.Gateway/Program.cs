@@ -22,7 +22,7 @@ builder.Services.AddReverseProxy()
             LoadBalancingPolicy="RoundRobin",
             Destinations = new Dictionary<string, DestinationConfig>
             {
-                { "mercado1", new DestinationConfig() { Address = "https://www.cloud.mercadopago.linplatform.com", } },
+                { "mercado1", new DestinationConfig() { Address = "https://cloud.mercadopago.linplatform.com", } },
                 { "mercadoazure", new DestinationConfig() { Address = "https://linmercadopago-a3dfgvahbpdpabfv.canadacentral-01.azurewebsites.net/" } }
             },
             HealthCheck = new () {
@@ -41,6 +41,8 @@ builder.Services.AddReverseProxy()
     ]);
 
 var app = builder.Build();
+
+app.MapGet("/", () => "Welcome to LIN Cloud Payments Gateway");
 
 app.MapReverseProxy();
 app.Run();
