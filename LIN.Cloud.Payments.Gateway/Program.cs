@@ -22,11 +22,12 @@ builder.Services.AddReverseProxy()
             LoadBalancingPolicy="RoundRobin",
             Destinations = new Dictionary<string, DestinationConfig>
             {
-                { "mercado1", new DestinationConfig() { Address = "https://cloud.mercadopago.linplatform.com", } },
+                { "mercado1", new DestinationConfig() { Address = "http://linmercadopago.somee.com/" } },
                 { "mercadoazure", new DestinationConfig() { Address = "https://linmercadopago-a3dfgvahbpdpabfv.canadacentral-01.azurewebsites.net/" } }
             },
             HealthCheck = new () {
-                Active = new(){
+                Active = new()
+                {
                     Enabled = true,
                     Interval = TimeSpan.FromSeconds(2),
                     Timeout = TimeSpan.FromSeconds(2),
